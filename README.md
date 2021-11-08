@@ -1,6 +1,9 @@
 # LSG Vote Troller
 This is a simple selenium based script to blast voting pages. 
 
+## Installation
+`pip install -r requirements.txt`
+
 ## Config
 Create a file called `config.py`. It should look like this example, but replace the values with your own.
 
@@ -20,8 +23,8 @@ names = [
 ]
 
 # The proxy connection strings
-http_proxy_string = 'https://username:password@your.proxyprovider.com:<port>'
-https_proxy_string = 'https://username:password@your.proxyprovider.com:<port>'
+http_proxy_string = 'https://<username>:<password>@proxy.example.com:<port>'
+https_proxy_string = 'https://<username>:<password>@proxy.example.com:<port>'
 
 # The selector of the root element that contains the name of the nominee and
 # the button to click to vote for them.
@@ -38,3 +41,6 @@ button_xpath = '//*[contains(@class, "likebtn-button")]'
 # Number of times to vote
 num_of_votes = 50
 ```
+
+## Usage
+`python vote-troller.py`
