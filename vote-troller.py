@@ -12,6 +12,7 @@ from chromedriver_py import binary_path
 
 def vote_for_names(driver, names):
     """Take a list of names and vote for each one."""
+    # Sleep to make sure items are visible
     time.sleep(2)
     for name in names:
         # Find the root element with the name
@@ -19,6 +20,7 @@ def vote_for_names(driver, names):
             By.XPATH, config.root_element_xpath.replace('NAME', name)
         )
 
+        # Sleeping to avoid misclick
         time.sleep(0.5)
 
         # Get the root element location
@@ -52,19 +54,19 @@ def vote_for_names(driver, names):
 
 
 def cast_votes():
-    """Perform casting of votes."""
+    """Create a browser and cast the votes."""
     # Web driver options
     options = {
         'proxy': {
             'http': config.http_proxy_string,
             'https': config.https_proxy_string,
-            #'no_proxy': 'localhost,127.0.0.1'
+            'no_proxy': 'localhost,127.0.0.1'
         }
     }
 
     # Create the webdriver
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")  # Uncomment for headless mode
     driver = webdriver.Chrome(
         options=chrome_options,
         seleniumwire_options=options,
@@ -78,16 +80,17 @@ def cast_votes():
 
         # Vote for the names
         vote_for_names(driver, config.names)
+        time.sleep(4)
         print('Voted')
     except Exception as e:
         print(e)
     finally:
-        # Close the web driver
+        # Close the web driver completely (needed for rotating proxy to work)
         driver.close()
         driver.quit()
         driver = None
 
 
-# Loop the specified number of times
+# Loop the specified number of times and cast the votes
 for i in range(0, config.num_of_votes):
     cast_votes()
